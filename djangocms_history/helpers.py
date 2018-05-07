@@ -74,6 +74,8 @@ def get_plugin_data(plugin, only_meta=False):
     else:
         plugin_fields = get_plugin_fields(plugin.plugin_type)
         _plugin_data = serializers.serialize('python', (plugin,), fields=plugin_fields)[0]
+        if "glossary" in plugin_fields:
+            _plugin_data['fields']['glossary']=plugin.glossary
         custom_data = _plugin_data['fields']
 
     plugin_data = {
