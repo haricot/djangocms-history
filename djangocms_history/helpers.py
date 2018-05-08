@@ -73,8 +73,12 @@ def get_plugin_data(plugin, only_meta=False):
         custom_data = None
     else:
         plugin_fields = get_plugin_fields(plugin.plugin_type)
-        _plugin_data = serializers.serialize('python', (plugin,), fields=plugin_fields)[0]
-        custom_data = _plugin_data['fields']
+        plugin_data_fields ={}
+        for i in plugin_fields:
+            if i != 'cmsplugin_ptr':
+                plugin_data_fields[i]=plugin.__getattribute__(i)
+
+        custom_data = OrderedDict(plugin_data_fields)
 
     plugin_data = {
         'pk': plugin.pk,
